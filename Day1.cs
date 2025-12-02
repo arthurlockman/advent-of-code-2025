@@ -1,5 +1,7 @@
-#!/usr/bin/env dotnet-script
-#load "../utils.csx"
+using AdventOfCode2025.Shared;
+using AoCHelper;
+
+namespace AdventOfCode2025;
 
 public class Dial(int startingPosition = 50)
 {
@@ -36,18 +38,26 @@ public class Dial(int startingPosition = 50)
     }
 }
 
-// Part 1: Sample Input
-WriteLine("====== PART 1 ======");
-var sampleDial = new Dial();
-sampleDial.Rotate(Utils.ReadInputLines("sample.txt"));
-WriteLine($"Sample safe code is {sampleDial.ZeroCounter}");
+public class Day1 : BaseDay
+{
+    private readonly IEnumerable<string> Input;
+    public Day1()
+    {
+        AsyncHelper.RunSync(async () => await Utils.GetInputData(2025, 1, InputFilePath));
+        Input = Utils.ReadInputLines(InputFilePath);
+    }
 
-// Part 1: Actual Input
-var dial = new Dial();
-dial.Rotate(Utils.ReadInputLines("input.txt"));
-WriteLine($"Real safe code is {dial.ZeroCounter}");
+    public override ValueTask<string> Solve_1()
+    {
+        var dial = new Dial();
+        dial.Rotate(Input);
+        return new(dial.ZeroCounter.ToString());
+    }
 
-// Part 2: Already Calculated
-WriteLine("\n====== PART 2 ======");
-WriteLine($"Sample safe code is {sampleDial.ZeroClickCounter}");
-WriteLine($"Real safe code is {dial.ZeroClickCounter}");
+    public override ValueTask<string> Solve_2()
+    {
+        var dial = new Dial();
+        dial.Rotate(Input);
+        return new(dial.ZeroClickCounter.ToString());
+    }
+}
