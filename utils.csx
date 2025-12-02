@@ -10,4 +10,14 @@ public static class Utils
         var filePath = Path.Combine(scriptDir, filename);
         return File.ReadLines(filePath);
     }
+
+    public static string ReadInput(
+        string filename,
+        [CallerFilePath] string scriptFile = "")
+    {
+        var scriptDir = Path.GetDirectoryName(scriptFile) ?? Directory.GetCurrentDirectory();
+        var filePath = Path.Combine(scriptDir, filename);
+        using StreamReader reader = new(filePath);
+        return reader.ReadToEnd();
+    }
 }
