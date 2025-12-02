@@ -66,10 +66,14 @@ private long SumBadProductIdsPart2(IEnumerable<string> ranges)
 // Part 1: Sample Input
 WriteLine("====== PART 1 ======");
 var sampleRanges = Utils.ReadInput("sample.txt").Split(',');
-WriteLine($"Sample sum: {SumBadProductIdsPart1(sampleRanges)}");
+var (result, elapsed) = Utils.Timed(() => SumBadProductIdsPart1(sampleRanges));
+WriteLine($"Sample sum: {result} (took {elapsed} ns)");
 var realRanges = Utils.ReadInput("input.txt").Split(',');
-WriteLine($"Real sum: {SumBadProductIdsPart1(realRanges)}");
+(result, elapsed) = Utils.Timed(() => SumBadProductIdsPart1(realRanges));
+WriteLine($"Real sum: {result} (took {elapsed} ns)");
 
 WriteLine("\n====== PART 2 ======");
-WriteLine($"Sample sum: {SumBadProductIdsPart2(sampleRanges)}");
-WriteLine($"Real sum: {SumBadProductIdsPart2(realRanges)}");
+(result, elapsed) = Utils.Timed(() => SumBadProductIdsPart2(sampleRanges));
+WriteLine($"Sample sum: {result} (took {elapsed} ns)");
+(result, elapsed) = Utils.Timed(() => SumBadProductIdsPart2(realRanges));
+WriteLine($"Real sum: {result} (took {elapsed} ns)");
