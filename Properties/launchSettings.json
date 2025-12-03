@@ -1,0 +1,20 @@
+{
+  "profiles": {
+    "Solve All Days": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    },
+    "Solve Latest Day": {
+      "commandName": "Project",
+      "commandLineArgs": "--day 0",
+      "dotnetRunMessages": true,
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
+

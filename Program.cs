@@ -1,7 +1,23 @@
 ﻿using AoCHelper;
 
-await Solver.SolveAll(options =>
+Action<SolverConfiguration> options = opt =>
 {
-    options.ShowOverallResults = true;
-    options.ClearConsole = false;
-});
+    opt.ShowOverallResults = true;
+    opt.ClearConsole = false;
+};
+
+if (args is ["--day", _] && int.TryParse(args[1], out var day))
+{
+    if (day == 0)
+    {
+        await Solver.SolveLast(options);
+    }
+    else
+    {
+        await Solver.Solve([(uint)day], options);
+    }
+}
+else
+{
+    await Solver.SolveAll(options);
+}

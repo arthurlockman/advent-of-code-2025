@@ -1,28 +1,22 @@
 using AdventOfCode2025.Shared;
-using AoCHelper;
+using JetBrains.Annotations;
 
 namespace AdventOfCode2025;
 
-public class Day2 : BaseDay
+[UsedImplicitly]
+public class Day2() : Day(2)
 {
-    private readonly IEnumerable<string> Input;
-    public Day2()
-    {
-        AsyncHelper.RunSync(async () => await Utils.GetInputData(2025, 2, InputFilePath));
-        Input = Utils.ReadInput(InputFilePath).Split(',');
-    }
-
     public override ValueTask<string> Solve_1()
     {
-        return new(SumBadProductIdsPart1(Input).ToString());
+        return new ValueTask<string>(SumBadProductIdsPart1(Input.Split(',')).ToString());
     }
 
     public override ValueTask<string> Solve_2()
     {
-        return new(SumBadProductIdsPart2(Input).ToString());
+        return new ValueTask<string>(SumBadProductIdsPart2(Input.Split(',')).ToString());
     }
 
-    public static IEnumerable<long> CreateRange(long start, long count)
+    private static IEnumerable<long> CreateRange(long start, long count)
     {
         var limit = start + count;
 
@@ -45,16 +39,10 @@ public class Day2 : BaseDay
                 .Select(id =>
                 {
                     var idStr = id.ToString();
-                    if (idStr.Length % 2 == 0)
-                    {
-                        var firstHalf = idStr.Substring(0, idStr.Length / 2);
-                        var secondHalf = idStr.Substring(idStr.Length / 2);
-                        if (firstHalf == secondHalf)
-                        {
-                            return id;
-                        }
-                    }
-                    return 0;
+                    if (idStr.Length % 2 != 0) return 0;
+                    var firstHalf = idStr[..(idStr.Length / 2)];
+                    var secondHalf = idStr[(idStr.Length / 2)..];
+                    return firstHalf == secondHalf ? id : 0;
                 }).Sum();
         }).Sum();
     }
@@ -73,7 +61,7 @@ public class Day2 : BaseDay
                     var idStr = id.ToString();
                     for (var i = 1; i < idStr.Length; i++)
                     {
-                        var chunk = idStr.Substring(0, i);
+                        var chunk = idStr[..i];
                         if (idStr.Replace(chunk, "").Length == 0)
                         {
                             return id;

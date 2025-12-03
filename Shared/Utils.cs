@@ -4,11 +4,6 @@ namespace AdventOfCode2025.Shared;
 
 public static class Utils
 {
-    public static IEnumerable<string> ReadInputLines(string filename)
-    {
-        return File.ReadLines(filename);
-    }
-
     public static string ReadInput(string filename)
     {
         using StreamReader reader = new(filename);
@@ -36,7 +31,7 @@ public static class Utils
         if (string.IsNullOrWhiteSpace(cookie))
         {
             throw new InvalidOperationException(
-                "Unable to get input from AdventOfCode.com. No session cookie found. See ReadMe for details.");
+                "Unable to get input from AdventOfCode.com. No session cookie found.");
         }
 
         var handler = new HttpClientHandler { UseCookies = false };
