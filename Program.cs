@@ -11,9 +11,9 @@ Action<SolverConfiguration> options = opt =>
 var runTests = args.Contains("--test");
 int? dayToRun = null;
 
-for (int i = 0; i < args.Length; i++)
+for (var i = 0; i < args.Length; i++)
 {
-    if (args[i] == "--day" && i + 1 < args.Length && int.TryParse(args[i + 1], out int d))
+    if (args[i] == "--day" && i + 1 < args.Length && int.TryParse(args[i + 1], out var d))
     {
         dayToRun = d;
     }
@@ -28,15 +28,7 @@ if (runTests)
 
     if (dayToRun.HasValue)
     {
-        Type? dayType = null;
-        if (dayToRun.Value == 0)
-        {
-            dayType = allDays.LastOrDefault();
-        }
-        else
-        {
-            dayType = allDays.FirstOrDefault(t => t.Name == $"Day{dayToRun}");
-        }
+        var dayType = dayToRun.Value == 0 ? allDays.LastOrDefault() : allDays.FirstOrDefault(t => t.Name == $"Day{dayToRun}");
 
         if (dayType != null)
         {

@@ -11,7 +11,7 @@ public class Dial(int startingPosition = 50)
 
     public void Rotate(IEnumerable<string> cmds)
     {
-        cmds.ToList().ForEach(l => Rotate(l));
+        cmds.ToList().ForEach(Rotate);
     }
 
     private void Rotate(string cmd)
