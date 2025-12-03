@@ -39,8 +39,13 @@ public class Dial(int startingPosition = 50)
 }
 
 [UsedImplicitly]
-public class Day1() : Day(1)
+public class Day1 : Day
 {
+    public Day1()
+    {
+        Test = new TestCase("3", "6");
+    }
+
     public override ValueTask<string> Solve_1()
     {
         var dial = new Dial();

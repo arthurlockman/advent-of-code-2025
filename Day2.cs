@@ -4,8 +4,13 @@ using JetBrains.Annotations;
 namespace AdventOfCode2025;
 
 [UsedImplicitly]
-public class Day2() : Day(2)
+public class Day2 : Day
 {
+    public Day2()
+    {
+        Test = new TestCase("1227775554", "4174379265");
+    }
+
     public override ValueTask<string> Solve_1()
     {
         return new ValueTask<string>(SumBadProductIdsPart1(Input.Split(',')).ToString());

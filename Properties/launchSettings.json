@@ -14,6 +14,22 @@
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
       }
+    },
+    "Run All Tests": {
+      "commandName": "Project",
+      "commandLineArgs": "--test",
+      "dotnetRunMessages": true,
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    },
+    "Run Latest Day Tests": {
+      "commandName": "Project",
+      "commandLineArgs": "--day 0 --test",
+      "dotnetRunMessages": true,
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
     }
   }
 }

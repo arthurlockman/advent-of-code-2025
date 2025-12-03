@@ -1,4 +1,6 @@
-﻿using AoCHelper;
+﻿using System.Reflection;
+using AdventOfCode2025.Shared;
+using AoCHelper;
 
 Action<SolverConfiguration> options = opt =>
 {
@@ -6,18 +8,74 @@ Action<SolverConfiguration> options = opt =>
     opt.ClearConsole = false;
 };
 
-if (args is ["--day", _] && int.TryParse(args[1], out var day))
+var runTests = args.Contains("--test");
+int? dayToRun = null;
+
+for (int i = 0; i < args.Length; i++)
 {
-    if (day == 0)
+    if (args[i] == "--day" && i + 1 < args.Length && int.TryParse(args[i + 1], out int d))
     {
-        await Solver.SolveLast(options);
+        dayToRun = d;
+    }
+}
+
+if (runTests)
+{
+    var allDays = Assembly.GetExecutingAssembly()
+        .GetTypes()
+        .Where(t => t.IsSubclassOf(typeof(Day)) && !t.IsAbstract)
+        .OrderBy(t => t.Name);
+
+    if (dayToRun.HasValue)
+    {
+        Type? dayType = null;
+        if (dayToRun.Value == 0)
+        {
+            dayType = allDays.LastOrDefault();
+        }
+        else
+        {
+            dayType = allDays.FirstOrDefault(t => t.Name == $"Day{dayToRun}");
+        }
+
+        if (dayType != null)
+        {
+            if (Activator.CreateInstance(dayType) is Day dayInstance)
+            {
+                await dayInstance.RunTests();
+            }
+        }
+        else
+        {
+            Console.WriteLine($"Day {dayToRun} not found.");
+        }
     }
     else
     {
-        await Solver.Solve([(uint)day], options);
+        foreach (var type in allDays)
+        {
+            if (Activator.CreateInstance(type) is Day instance)
+            {
+                await instance.RunTests();
+            }
+        }
     }
 }
 else
 {
-    await Solver.SolveAll(options);
+    if (dayToRun.HasValue)
+    {
+        if (dayToRun.Value == 0)
+        {
+            await Solver.SolveLast(options);
+        }
+        else
+        {
+            await Solver.Solve([(uint)dayToRun.Value], options);
+        }
+    }
+    else
+    {
+        await Solver.SolveAll(options);
+    }
 }
