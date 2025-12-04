@@ -13,7 +13,7 @@ public class Day3 : Day
 
     public override ValueTask<string> Solve_1()
     {
-        var result = GetInputLines().AsParallel().Select(line =>
+        var result = InputLines.Value.AsParallel().Select(line =>
         {
             var batteries = line.ToCharArray().Select(c => int.Parse(c.ToString())).ToArray();
             var highestIdx = FindHighestIndex(batteries, 0, 1);
@@ -25,7 +25,7 @@ public class Day3 : Day
 
     public override ValueTask<string> Solve_2()
     {
-        var result = GetInputLines().AsParallel().Select(line =>
+        var result = InputLines.Value.AsParallel().Select(line =>
         {
             var batteries = line.ToCharArray().Select(c => int.Parse(c.ToString())).ToArray();
             var result = "";

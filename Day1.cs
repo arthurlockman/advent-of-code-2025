@@ -9,7 +9,7 @@ public class Dial(int startingPosition = 50)
     public int ZeroCounter { get; private set; }
     public int ZeroClickCounter { get; private set; }
 
-    public void Rotate(IEnumerable<string> cmds)
+    public void Rotate(string[] cmds)
     {
         cmds.ToList().ForEach(Rotate);
     }
@@ -49,14 +49,14 @@ public class Day1 : Day
     public override ValueTask<string> Solve_1()
     {
         var dial = new Dial();
-        dial.Rotate(GetInputLines());
+        dial.Rotate(InputLines.Value);
         return new ValueTask<string>(dial.ZeroCounter.ToString());
     }
 
     public override ValueTask<string> Solve_2()
     {
         var dial = new Dial();
-        dial.Rotate(GetInputLines());
+        dial.Rotate(InputLines.Value);
         return new ValueTask<string>(dial.ZeroClickCounter.ToString());
     }
 }

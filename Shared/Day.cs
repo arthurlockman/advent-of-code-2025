@@ -9,6 +9,7 @@ public abstract class Day : BaseDay
     protected string Input { get; private set; }
     public record TestCase(string? ExpectedPart1, string? ExpectedPart2);
     public TestCase? Test { get; set; }
+    protected Lazy<string[]> InputLines => new(() => Input.Split("\n"));
 
     protected Day()
     {
@@ -17,11 +18,6 @@ public abstract class Day : BaseDay
         AsyncHelper.RunSync(async () => await Utils.GetInputData(Year, day, InputFilePath));
         // ReSharper disable once VirtualMemberCallInConstructor
         Input = Utils.ReadInput(InputFilePath).Trim();
-    }
-
-    protected IEnumerable<string> GetInputLines()
-    {
-        return Input.Split("\n");
     }
 
     public async Task RunTests()
