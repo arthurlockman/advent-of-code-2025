@@ -7,6 +7,7 @@ public abstract class Day : BaseDay
     private const int Year = 2025;
 
     protected string Input { get; private set; }
+    protected string RawInput { get; private set; }
     public record TestCase(string? ExpectedPart1, string? ExpectedPart2);
     public TestCase? Test { get; set; }
     protected Lazy<string[]> InputLines => new(() => Input.Split("\n"));
@@ -17,7 +18,8 @@ public abstract class Day : BaseDay
         var day = (int)CalculateIndex();
         AsyncHelper.RunSync(async () => await Utils.GetInputData(Year, day, InputFilePath));
         // ReSharper disable once VirtualMemberCallInConstructor
-        Input = Utils.ReadInput(InputFilePath).Trim();
+        RawInput = Utils.ReadInput(InputFilePath);
+        Input = RawInput.Trim();
     }
 
     public async Task RunTests()
@@ -25,12 +27,14 @@ public abstract class Day : BaseDay
         var sampleFilePath = Path.Combine("Inputs", $"{(int)CalculateIndex():D2}Sample.txt");
         if (File.Exists(sampleFilePath))
         {
-            var sampleInput = Utils.ReadInput(sampleFilePath).Trim();
+            var sampleInput = Utils.ReadInput(sampleFilePath);
             var originalInput = Input;
+            var originalRawInput = RawInput;
             Console.WriteLine($"Running tests for Day {CalculateIndex()}...");
             if (Test?.ExpectedPart1 != null)
             {
                 Input = sampleInput.Trim();
+                RawInput = sampleInput;
                 var result1 = await Solve_1();
                 if (result1 != Test.ExpectedPart1)
                 {
@@ -65,6 +69,7 @@ public abstract class Day : BaseDay
             }
 
             Input = originalInput;
+            RawInput = originalRawInput;
         }
         else
         {
