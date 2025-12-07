@@ -10,7 +10,6 @@ public partial class Day6 : Day
     public Day6()
     {
         Test = new TestCase("4277556", "3263827");
-
     }
 
     public override ValueTask<string> Solve_1()
