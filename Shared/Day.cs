@@ -10,6 +10,7 @@ public abstract class Day : BaseDay
     protected string RawInput { get; private set; }
     public record TestCase(string? ExpectedPart1, string? ExpectedPart2);
     public TestCase? Test { get; set; }
+    public bool TestMode { get; set; }
     protected Lazy<string[]> InputLines => new(() => Input.Split("\n"));
 
     protected Day()
@@ -30,6 +31,7 @@ public abstract class Day : BaseDay
             var sampleInput = Utils.ReadInput(sampleFilePath);
             var originalInput = Input;
             var originalRawInput = RawInput;
+            TestMode = true;
             Console.WriteLine($"Running tests for Day {CalculateIndex()}...");
             if (Test?.ExpectedPart1 != null)
             {
@@ -70,6 +72,7 @@ public abstract class Day : BaseDay
 
             Input = originalInput;
             RawInput = originalRawInput;
+            TestMode = false;
         }
         else
         {
