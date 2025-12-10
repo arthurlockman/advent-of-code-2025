@@ -1,18 +1,13 @@
 using AdventOfCode2025.Shared;
+using JetBrains.Annotations;
 using NetTopologySuite.Geometries;
 
 namespace AdventOfCode2025;
 
-internal class Rectangle2D
+internal class Rectangle2D(Point2D corner1, Point2D corner2)
 {
-    public Point2D Corner1 { get; }
-    public Point2D Corner2 { get; }
-
-    public Rectangle2D(Point2D corner1, Point2D corner2)
-    {
-        Corner1 = corner1;
-        Corner2 = corner2;
-    }
+    public Point2D Corner1 { get; } = corner1;
+    public Point2D Corner2 { get; } = corner2;
 
     public long Area => (Math.Abs(Corner1.X - Corner2.X) + 1) * (Math.Abs(Corner1.Y - Corner2.Y) + 1);
 
@@ -23,6 +18,7 @@ internal class Rectangle2D
     public override int GetHashCode() => HashCode.Combine(Corner1, Corner2);
 }
 
+[UsedImplicitly]
 public class Day9 : Day
 {
     public Day9()
@@ -53,14 +49,13 @@ public class Day9 : Day
         var geoFactory = new GeometryFactory();
         var boundingPolygon = geoFactory.CreatePolygon(coordinates.ToArray());
 
-        var rectangles = coordinates.SelectMany(c1 => coordinates.Select(c2 => (
+        var rectangle = coordinates.SelectMany(c1 => coordinates.Select(c2 => (
                 geoFactory.ToGeometry(new Envelope(c1, c2)),
                 (Math.Abs(c2.X - c1.X) + 1) * (Math.Abs(c2.Y - c1.Y) + 1))))
             .Distinct()
-            .AsParallel()
-            .Where(r => r.Item1.Within(boundingPolygon))
             .OrderByDescending(c => c.Item2)
-            .ToArray();
-        return new ValueTask<string>($"{rectangles[0].Item2}");
+            .AsParallel()
+            .First(r => r.Item1.Within(boundingPolygon));
+        return new ValueTask<string>($"{rectangle.Item2}");
     }
 }
