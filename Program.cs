@@ -24,7 +24,9 @@ if (runTests)
     var allDays = Assembly.GetExecutingAssembly()
         .GetTypes()
         .Where(t => t.IsSubclassOf(typeof(Day)) && !t.IsAbstract)
-        .OrderBy(t => t.Name);
+        // Workaround for SolveLast bug with days > 9
+        .OrderBy(t => t.Name.Length)
+        .ThenBy(t => t.Name);
 
     if (dayToRun.HasValue)
     {
@@ -59,7 +61,24 @@ else
     {
         if (dayToRun.Value == 0)
         {
-            await Solver.SolveLast(options);
+            // Workaround for SolveLast bug with days > 9
+            var allDays = Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(t => t.IsSubclassOf(typeof(BaseDay)) && !t.IsAbstract)
+                .Select(t => t.Name)
+                .Where(name => name.StartsWith("Day") && int.TryParse(name.Substring(3), out _))
+                .Select(name => int.Parse(name.Substring(3)))
+                .OrderByDescending(day => day)
+                .FirstOrDefault();
+
+            if (allDays > 0)
+            {
+                await Solver.Solve([(uint)allDays], options);
+            }
+            else
+            {
+                await Solver.SolveLast(options);
+            }
         }
         else
         {

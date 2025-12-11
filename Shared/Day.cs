@@ -25,16 +25,26 @@ public abstract class Day : BaseDay
 
     public async Task RunTests()
     {
-        var sampleFilePath = Path.Combine("Inputs", $"{(int)CalculateIndex():D2}Sample.txt");
-        if (File.Exists(sampleFilePath))
+        var day = (int)CalculateIndex();
+
+        var sampleFilePath1 = Path.Combine("Inputs", $"{day:D2}Sample.txt");
+        var sampleFilePath2 = Path.Combine("Inputs", $"{day:D2}Sample2.txt");
+
+        if (!File.Exists(sampleFilePath2))
         {
-            var sampleInput = Utils.ReadInput(sampleFilePath);
-            var originalInput = Input;
-            var originalRawInput = RawInput;
-            TestMode = true;
-            Console.WriteLine($"Running tests for Day {CalculateIndex()}...");
-            if (Test?.ExpectedPart1 != null)
+            sampleFilePath2 = sampleFilePath1;
+        }
+
+        var originalInput = Input;
+        var originalRawInput = RawInput;
+        TestMode = true;
+        Console.WriteLine($"Running tests for Day {CalculateIndex()}...");
+
+        if (Test?.ExpectedPart1 != null)
+        {
+            if (File.Exists(sampleFilePath1))
             {
+                var sampleInput = Utils.ReadInput(sampleFilePath1);
                 Input = sampleInput.Trim();
                 RawInput = sampleInput;
                 var result1 = await Solve_1();
@@ -51,10 +61,21 @@ public abstract class Day : BaseDay
 
                 Console.ResetColor();
             }
-
-            if (Test?.ExpectedPart2 != null)
+            else
             {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"[TEST FAILED] Sample input file not found: {sampleFilePath1}");
+                Console.ResetColor();
+            }
+        }
+
+        if (Test?.ExpectedPart2 != null)
+        {
+            if (File.Exists(sampleFilePath2))
+            {
+                var sampleInput = Utils.ReadInput(sampleFilePath2);
                 Input = sampleInput.Trim();
+                RawInput = sampleInput;
                 var result2 = await Solve_2();
                 if (result2 != Test.ExpectedPart2)
                 {
@@ -69,16 +90,16 @@ public abstract class Day : BaseDay
 
                 Console.ResetColor();
             }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"[TEST FAILED] Sample input file not found: {sampleFilePath2}");
+                Console.ResetColor();
+            }
+        }
 
-            Input = originalInput;
-            RawInput = originalRawInput;
-            TestMode = false;
-        }
-        else
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("[TEST FAILED] Sample input was not found.");
-            Console.ResetColor();
-        }
+        Input = originalInput;
+        RawInput = originalRawInput;
+        TestMode = false;
     }
 }
