@@ -7,7 +7,7 @@ namespace AdventOfCode2025.Shared;
 
 public class StringGraph
 {
-    public CustomGraph Graph { get; } = new();
+    private CustomGraph Graph { get; } = new();
 
     private readonly Dictionary<string, Node> _nameToNode = new();
     private readonly Dictionary<Node, string> _nodeToName = new();

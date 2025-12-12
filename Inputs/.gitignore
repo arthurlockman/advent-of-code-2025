@@ -3,4 +3,4 @@
 # Except this file
 !.gitignore
 # And sample inputs
-!*Sample.txt
+!*Sample*.txt
