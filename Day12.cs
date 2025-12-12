@@ -27,6 +27,6 @@ public class Day12 : Day
 
     public override ValueTask<string> Solve_2()
     {
-        throw new NotImplementedException();
+        return new ValueTask<string>("Merry Christmas!");
     }
 }
